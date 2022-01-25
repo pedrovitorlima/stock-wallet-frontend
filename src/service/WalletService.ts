@@ -8,8 +8,18 @@ const apiClient = axios.create({
   },
 });
 
+const headers = {
+  'Content-Type': 'application/json',
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': "POST, GET, OPTIONS, PUT, DELETE"
+}
+
+
 const create = async ({ name }: Wallet) => {
-  const response = await axios.post<any>("http://localhost:4000/wallet", { name });
+  const response = await axios.post<any>(
+    "http://localhost:4000/wallet", 
+    { name }, 
+    { headers: headers });
 
   return response.data;
 }

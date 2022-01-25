@@ -1,11 +1,18 @@
 import CreateWallet from './Wallet/CreateWallet/CreateWallet';
 
 import './App.css';
+import GlobalStyle from './styles/global'
+import Header from './Header/Header';
 
-function App() {
+const App = () => {
   return (    
     <div className="App">
-      <CreateWallet></CreateWallet>
+      <GlobalStyle></GlobalStyle>
+      <Header></Header>
+      
+      <div className='content'>
+        <CreateWallet></CreateWallet>
+      </div>
     </div>
   );
 }

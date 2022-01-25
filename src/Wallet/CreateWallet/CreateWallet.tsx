@@ -1,3 +1,4 @@
+import { Button, Grid, TextField, Paper, Card, CardContent, CardHeader } from '@material-ui/core';
 import { useState } from 'react';
 
 import {useMutation} from 'react-query'
@@ -32,9 +33,36 @@ export default function CreateWallet() {
 
   return (
     <div>
-        <h3>Wallets / Create wallet</h3>
-        <input aria-label='Name' onChange={ (e) => {setWalletName(e.target.value)} }/>
-        <button onClick={postData}>Submit</button>
+        <Card>
+          <CardHeader title="wallets/create" />
+          <CardContent>
+            <Grid container spacing={1}>
+              <Grid xs={12} sm={6} item>
+                <TextField variant="outlined" 
+                  label="Wallet Name"
+                  placeholder='Enter the wallet name'
+                  required 
+                  onChange={ (e) => {setWalletName(e.target.value)} }
+                  fullWidth
+                  inputProps={{
+                    "data-testid": "nameTextField",
+                  }}
+                ></TextField>
+              </Grid>
+
+              <Grid xs={12} item>
+                <Button variant="contained" 
+                  color="primary" 
+                  onClick={postData} 
+                  data-testid="submitButton">
+                    Submit
+                </Button>
+              </Grid>
+
+            </Grid>
+          </CardContent>
+        </Card>
+
         <p>{message}</p>
     </div>
   );
