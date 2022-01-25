@@ -62,10 +62,7 @@ export default function CreateWallet() {
             </Grid>
           </CardContent>
         </Card>
-
         <p>{message}</p>
     </div>
   );
 }
-
-
