@@ -3,10 +3,12 @@ import { useState } from 'react';
 
 import {useMutation} from 'react-query'
 import WalletService from '../../service/WalletService';
+import { ApiError } from '../../domain/error';
 
 export default function CreateWallet() {
-  const [message, setMessage] = useState('');
   const [walletName, setWalletName] = useState('');
+  const [apiError, setApiError] = useState<ApiError>({errors: []})
+  const [walletNameApiError, setWalletNameApiError] = useState("")
 
   const { isLoading: isPostingWallet, mutate: postWallet } = useMutation<any, Error>(
     async () => {
@@ -14,11 +16,16 @@ export default function CreateWallet() {
     },
     {
       onSuccess: (res) => {
-        setMessage(`Success: ${res.message}`);
+        setApiError({errors: []});
+        setWalletNameApiError("");
       },
 
       onError: (res, any) => {
-        setMessage(`${res.message}`);
+        const errorBody = JSON.stringify(res)        
+        var apiError: ApiError = JSON.parse(errorBody)
+        
+        setWalletNameApiError(apiError.errors[0].description);
+        setApiError(apiError);
       }
     }
   )
@@ -27,22 +34,23 @@ export default function CreateWallet() {
     try {
       postWallet();
     } catch(err) {
-      setMessage(JSON.stringify(err, null, 2));
+      console.error(err);
     }
   }
 
   return (
     <div>
         <Card>
-          <CardHeader title="wallets/create" />
+          <CardHeader title="wallets/create" data-testid="createWalletHeader"/>
           <CardContent>
             <Grid container spacing={1}>
               <Grid xs={12} sm={6} item>
                 <TextField variant="outlined" 
-                  label="Wallet Name"
+                  label={walletNameApiError.length !== 0? walletNameApiError : "Wallet Name"}
                   placeholder='Enter the wallet name'
                   required 
                   onChange={ (e) => {setWalletName(e.target.value)} }
+                  error={walletNameApiError.length !== 0}
                   fullWidth
                   inputProps={{
                     "data-testid": "nameTextField",
@@ -61,8 +69,7 @@ export default function CreateWallet() {
 
             </Grid>
           </CardContent>
-        </Card>
-        <p>{message}</p>
+        </Card>        
     </div>
   );
 }
