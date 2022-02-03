@@ -1,7 +1,6 @@
 
 
 import { Card, CardContent, CardHeader, Grid, Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
-import { DataGrid, GridColDef, GridRowsProp } from '@mui/x-data-grid';
 import React from 'react';
 
 export default function ListWallet() {
