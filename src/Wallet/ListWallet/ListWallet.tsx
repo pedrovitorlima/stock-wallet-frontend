@@ -1,14 +1,20 @@
 
 
-import { Card, CardContent, CardHeader, Grid, Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
-import React from 'react';
+import { Button, Card, CardContent, CardHeader, Grid, Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
+import { FC } from 'react';
+import { useWallets } from '../../hooks/useWallets';
 
-export default function ListWallet() {
+const ListWallet: FC = () => {
 
+  const { isLoading, isError, error, data } = useWallets();
   return (
     <div>
+      {isError && 
+        <div>An error happened: {error?.message}</div>
+      }
+      {">>>>" + JSON.stringify(data)}
       <Card>
-        <CardHeader title="wallets/create" data-testid="createWalletHeader"/>
+        <CardHeader title="wallets/list"/>
         <CardContent>
           <Grid container spacing={1}>
           <Table aria-label="simple table" data-testid="dataGrid">
@@ -16,14 +22,27 @@ export default function ListWallet() {
               <TableRow>
                 <TableCell>ID</TableCell>
                 <TableCell>Wallet Name</TableCell>
+                <TableCell></TableCell>
               </TableRow>
             </TableHead>
 
             <TableBody>
-              <TableRow>
-                <TableCell align="right">{1}</TableCell>
-                <TableCell align="right">{"Wallet1"}</TableCell>
-              </TableRow>
+              {data !== undefined && data.map(wallet => (
+                <TableRow key={wallet.id}>
+                  <TableCell align="right">{wallet.id}</TableCell>
+                  <TableCell align="right">{wallet.name}</TableCell>
+                  <TableCell align="center">
+                    <Button variant="text" 
+                      color="secondary"
+                      aria-label='Edit'
+                      size='small'
+                      data-testid="goToEditWallet">
+                        edit
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+              
             </TableBody>
           </Table>
           </Grid>
@@ -32,3 +51,5 @@ export default function ListWallet() {
     </div>
   );
 }
+
+export default ListWallet;

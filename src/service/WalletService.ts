@@ -1,4 +1,5 @@
 import axios from "axios";
+import { useQuery } from "react-query";
 import { ApiError } from "../domain/error";
 import { Wallet } from "../domain/wallet";
 
@@ -31,8 +32,19 @@ const create = async ({ name }: Wallet) => {
   })
 }
 
+const list = async ():Promise<Wallet[]> => {
+  const res = await fetch('');
+
+  if (res.ok) {
+    return res.json();
+  }
+
+  throw new Error('Network response not ok');
+}
+
 const WalletService = {
-  create
+  create,
+  list
 }
 
 export default WalletService;

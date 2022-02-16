@@ -7,7 +7,7 @@ import { ApiError } from '../../domain/error';
 
 export default function CreateWallet() {
   const [walletName, setWalletName] = useState('');
-  const [apiError, setApiError] = useState<ApiError>({errors: []})
+  const [apiError, setApiError] = useState<ApiError>({errors: [], message: null})
   const [walletNameApiError, setWalletNameApiError] = useState("")
 
   const { isLoading: isPostingWallet, mutate: postWallet } = useMutation<any, Error>(
@@ -16,7 +16,7 @@ export default function CreateWallet() {
     },
     {
       onSuccess: (res) => {
-        setApiError({errors: []});
+        setApiError({errors: [], message: null});
         setWalletNameApiError("");
       },
 

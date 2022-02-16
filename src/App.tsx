@@ -12,7 +12,6 @@ const App = () => {
   const routes: string[] = ['/', '/wallet']
 
   const handleChange = (_e: React.ChangeEvent<{}>, index: number) => {
-    console.log("navigate to " + routes[index]);
     setValue(index);
     navigate(routes[index]);
   }
