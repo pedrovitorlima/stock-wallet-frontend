@@ -1,5 +1,6 @@
 export interface ApiError {
-  errors: ValidationError[]
+  errors: ValidationError[],
+  message: string  
 }
 
 export interface ValidationError {
