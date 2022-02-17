@@ -20,9 +20,9 @@ export default function CreateWallet() {
         setWalletNameApiError("");
       },
 
-      onError: (res, any) => {
-        const errorBody = JSON.stringify(res)        
-        var apiError: ApiError = JSON.parse(errorBody)
+      onError: (err: any) => {
+        const errorBody = JSON.stringify(err);      
+        var apiError: ApiError = JSON.parse(errorBody);
         
         setWalletNameApiError(apiError.errors[0].description);
         setApiError(apiError);

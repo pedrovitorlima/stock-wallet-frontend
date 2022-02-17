@@ -18,22 +18,16 @@ describe('Given CreateWallet component', () => {
     });
 
     test ('Then a form is rendered', () => {
-        const button = screen.getByTestId('submitButton');
-        const walletNameField = screen.getByTestId('nameTextField');
-        const title = screen.getByTestId("createWalletHeader");
-
-        expect(button).toBeInTheDocument();
-        expect(walletNameField).toBeInTheDocument();
-        expect(title).toBeInTheDocument();
+        screen.getByTestId('submitButton');
+        screen.getByTestId('nameTextField');
+        screen.getByTestId("createWalletHeader");
     });
 
     describe('WHEN I Submit a form with invalid inputs', () => {
 
         test('AND the Name has more than 200 letter THEN it should show me an error message', async () => {
-            
             const errorBody = '{"errors":[{"field":"name","description":"Name size should not be bigger than 200"}]}';
             makeServiceThrowError(errorBody);
-
 
             const walletNameField = screen.getByTestId('nameTextField');
 
@@ -43,9 +37,7 @@ describe('Given CreateWallet component', () => {
             const button = screen.getByTestId('submitButton');
             fireEvent.click(button);
             
-            const error = await screen.findByText("Name size should not be bigger than 200");
-
-            expect(error).not.toBeNaN();
+            await screen.findByText("Name size should not be bigger than 200");
         });
 
     })
