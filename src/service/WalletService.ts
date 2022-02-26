@@ -24,14 +24,9 @@ const create = async ({ name }: Wallet) => {
   return response.data;
 }
 
-const list = async ():Promise<Wallet[]> => {
-  const res = await fetch('');
-
-  if (res.ok) {
-    return res.json();
-  }
-
-  throw new Error('Network response not ok');
+const list = async () => {
+  const response = await apiClient.get<Wallet[]>("/wallet");
+  return response.data;
 }
 
 const WalletService = {
