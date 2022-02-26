@@ -3,6 +3,10 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import App from './App';
 import { BrowserRouter } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from 'react-query';
+import { useFetchAllWallets } from './hooks/useFetchAllWallets';
+
+const mockedUseFetchAllWallets = useFetchAllWallets as jest.Mock<any>; 
+jest.mock("./hooks/useFetchAllWallets");
 
 describe('Given APP component', () => {
   describe('When application is loaded', () => {
@@ -22,6 +26,8 @@ describe('Given APP component', () => {
 
   describe('When the user click on Wallet link', () => {    
     test('Then it should render the Wallet main page', () => {
+      mockedUseFetchAllWallets.mockImplementation(() => ({ isLoading: false }));
+      
       renderComponent();
       const walletsLink = screen.getByTestId("wallets-link")
       fireEvent.click(walletsLink);

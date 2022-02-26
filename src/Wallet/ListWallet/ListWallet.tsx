@@ -1,20 +1,26 @@
 
 
-import { Button, Card, CardContent, CardHeader, Grid, Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
+import { Button, Card, CardContent, CardHeader, Container, Grid, Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
 import { FC, useState } from 'react';
-import { ApiError } from '../../domain/error';
+import ReactLoading from "react-loading";
 import { useFetchAllWallets } from '../../hooks/useFetchAllWallets';
 
 const ListWallet: FC = () => {
 
-  const [apiError, setApiError] = useState<string | null>(null);
+  const [apiError, setApiError] = useState<string | undefined>();
   const { data, error, isLoading, isError } = useFetchAllWallets();
 
   if (isError) {
-    const errorBody = JSON.stringify(error);      
-    var responseError: ApiError = JSON.parse(errorBody);
-    
-    setApiError(responseError.message);      
+    setApiError(error?.message);      
+  }
+
+  if (isLoading) {
+    return (
+      <Container>
+        <ReactLoading type="balls"></ReactLoading>
+        <p>Loading wallets</p>
+      </Container>
+    );
   }
 
   return (

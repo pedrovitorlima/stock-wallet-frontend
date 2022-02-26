@@ -2,23 +2,30 @@ import { render, screen } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import ListWallet from "./ListWallet";
 import { Wallet } from "../../domain/wallet";
-import { useFetchAllWallets } from "../../hooks/useWallets";
+import { useFetchAllWallets } from "../../hooks/useFetchAllWallets";
 
 const mockedUseFetchAllWallets = useFetchAllWallets as jest.Mock<any>; 
-jest.mock("../../hooks/useWallets");
+jest.mock("../../hooks/useFetchAllWallets");
 
 describe('Given ListWallet component', () => {
   beforeEach(() => {
-		mockedUseFetchAllWallets.mockImplementation(() => ({ }));
+		mockedUseFetchAllWallets.mockImplementation(() => ({ isLoading: false }));
 	});
 
   describe('When the component renders', () => {
+
+    test('Then it should render a loading message', () => {
+      mockedUseFetchAllWallets.mockImplementation(() => ({ isLoading: true }));
+
+      renderComponent();
+      
+      screen.getByText('Loading wallets');
+    });
     
     test('Then it should show a header', () => {
       renderComponent();
 
-      const header = screen.getByText("wallets/list");
-      expect(header).toBeInTheDocument();
+      screen.getByText("wallets/list");
     });
     
     test('Then it should show a data grid', () => {
@@ -43,6 +50,15 @@ describe('Given ListWallet component', () => {
         
         screen.getByText("wallet 1");
       }); 
+
+      test('Then the loading message should disapear after render', () => {
+        mockedUseFetchAllWallets.mockImplementation(() => ({ isLoading: false, }));
+        
+        renderComponent();
+        
+        const loadingMessage = screen.queryByText('Loading wallets');
+        expect(loadingMessage).not.toBeInTheDocument();
+      })
     });
     
   });
