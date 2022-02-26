@@ -3,7 +3,7 @@
 import { Button, Card, CardContent, CardHeader, Grid, Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
 import { FC, useState } from 'react';
 import { ApiError } from '../../domain/error';
-import { useFetchAllWallets } from '../../hooks/useWallets';
+import { useFetchAllWallets } from '../../hooks/useFetchAllWallets';
 
 const ListWallet: FC = () => {
 
