@@ -1,56 +1,21 @@
 
 
 import { Button, Card, CardContent, CardHeader, Grid, Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
-import { FC, useEffect, useState } from 'react';
-import { useQuery } from 'react-query';
+import { FC, useState } from 'react';
 import { ApiError } from '../../domain/error';
-import { Wallet } from '../../domain/wallet';
-import WalletService from '../../service/WalletService';
+import { useFetchAllWallets } from '../../hooks/useWallets';
 
 const ListWallet: FC = () => {
 
-  const [wallets, setWallets] = useState<Wallet[] | null>(null);
   const [apiError, setApiError] = useState<string | null>(null);
+  const { data, error, isLoading, isError } = useFetchAllWallets();
 
-  const { isLoading: isLoadingWallets, refetch: getAllWallets } = useQuery<Wallet[], Error>(
-    "query-wallets",
-    async () => {
-      const wallets = await WalletService.list();
-      // console.log("fetched: " + JSON.stringify(wallets));
-      return wallets;
-    },
-    {
-      
-      enabled: false,
-      
-      onSuccess: (res: Wallet[]) => {
-        console.log('[onSuccess]: response is ' + JSON.stringify(res));
-        setWallets(res);
-      },
-
-      onError: (err: any) => {
-        console.log('[onError]: error is ' + err);
-        const errorBody = JSON.stringify(err);      
-        var apiError: ApiError = JSON.parse(errorBody);
-        
-        setApiError(apiError.message);      
-      },
-    }
-  );
-
-  useEffect(() => {
-    getAllWallets();
-  });
-
-
-  // // function getAllData() {
-  // try {
-  //   getAllWallets();
-  // } catch (err) {
-  //   // setGetResult(fortmatResponse(err));
-  // }
-
-  console.log('allWallets is ' + JSON.stringify(wallets));
+  if (isError) {
+    const errorBody = JSON.stringify(error);      
+    var responseError: ApiError = JSON.parse(errorBody);
+    
+    setApiError(responseError.message);      
+  }
 
   // }
 
@@ -71,7 +36,6 @@ const ListWallet: FC = () => {
       {apiError !== null && 
         <div>An error happened: {apiError}</div>
       }
-      {">>>>" + JSON.stringify(wallets)}
       <Card>
         <CardHeader title="wallets/list"/>
         <CardContent>
@@ -86,7 +50,7 @@ const ListWallet: FC = () => {
             </TableHead>
 
             <TableBody>
-              {wallets !== null && wallets.map(wallet => (
+              {data?.map(wallet => (
                 <TableRow key={wallet.id}>
                   <TableCell align="right">{wallet.id}</TableCell>
                   <TableCell align="right">{wallet.name}</TableCell>
