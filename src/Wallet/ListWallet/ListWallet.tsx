@@ -17,20 +17,6 @@ const ListWallet: FC = () => {
     setApiError(responseError.message);      
   }
 
-  // }
-
-
-  // try {
-  //   fetchAll();
-  // } catch (err: any) {
-  //   setApiError(err);
-  // }
-
-  // console.log('getResult is >> ' + JSON.stringify(getResult));
-  // console.log('apiError is >> ' + JSON.stringify(apiError));
-  
-
-  // const { isLoading, isError, error, data } = useWallets();
   return (
     <div>
       {apiError !== null && 
