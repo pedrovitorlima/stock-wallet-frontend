@@ -39,8 +39,8 @@ describe('Given ListWallet component', () => {
         
         renderComponent();
         
-        await screen.findByText("wallet 1");
-
+        // await screen.findByText("wallet 1");
+        screen.getByText("wallet 1");
         // await waitFor(() => screen.findByText("wallet 1"));
       }); 
     });
