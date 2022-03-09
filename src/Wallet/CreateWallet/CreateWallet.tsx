@@ -1,6 +1,7 @@
 import { Button, Grid, TextField, Card, CardContent, CardHeader } from '@material-ui/core';
 import { useState } from 'react';
 
+import { useNavigate } from "react-router-dom";
 import {useMutation} from 'react-query'
 import WalletService from '../../service/WalletService';
 import { ApiError } from '../../domain/error';
@@ -9,6 +10,7 @@ export default function CreateWallet() {
   const [walletName, setWalletName] = useState('');
   const [walletNameApiError, setWalletNameApiError] = useState("")
   const [genericErrorMessage, setGenericErrorMessage] = useState<string | null>(null);
+  const history = useNavigate();
 
   const { isLoading: isPostingWallet, mutate: postWallet } = useMutation<any, Error>(
     async () => {
@@ -28,9 +30,10 @@ export default function CreateWallet() {
     }
   )
 
-  const postData = () => {
+  function postData() {
     try {
       postWallet();
+      history("/wallet");
     } catch(err) {
       console.error(err);
     }

@@ -6,6 +6,19 @@ import WalletService from "../../service/WalletService";
 
 import CreateWallet from "./CreateWallet"
 
+const mockedNavigator = jest.fn(() => {
+    return () => {
+        function history(url:string) {
+            //dumb mock so that it will not throw an error    
+        }
+    }
+});
+
+jest.mock("react-router-dom", () => ({
+    ...jest.requireActual('react-router-dom'),
+    useNavigate: () => mockedNavigator,
+}));
+
 describe('Given CreateWallet component', () => {
 
     beforeEach (() => {
