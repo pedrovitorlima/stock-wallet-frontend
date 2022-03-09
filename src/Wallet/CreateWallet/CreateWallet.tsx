@@ -7,8 +7,8 @@ import { ApiError } from '../../domain/error';
 
 export default function CreateWallet() {
   const [walletName, setWalletName] = useState('');
-  const [apiError, setApiError] = useState<ApiError>({errors: [], message: null})
   const [walletNameApiError, setWalletNameApiError] = useState("")
+  const [genericErrorMessage, setGenericErrorMessage] = useState<string | null>(null);
 
   const { isLoading: isPostingWallet, mutate: postWallet } = useMutation<any, Error>(
     async () => {
@@ -16,21 +16,19 @@ export default function CreateWallet() {
     },
     {
       onSuccess: (res) => {
-        setApiError({errors: [], message: null});
         setWalletNameApiError("");
       },
 
       onError: (err: any) => {
         const errorBody = JSON.stringify(err);      
         var apiError: ApiError = JSON.parse(errorBody);
-        
+        setGenericErrorMessage(apiError.message);
         setWalletNameApiError(apiError.errors[0].description);
-        setApiError(apiError);
       }
     }
   )
 
-  function postData() {
+  const postData = () => {
     try {
       postWallet();
     } catch(err) {
@@ -43,6 +41,9 @@ export default function CreateWallet() {
         <Card>
           <CardHeader title="wallets/create" data-testid="createWalletHeader"/>
           <CardContent>
+          {genericErrorMessage !== null && 
+            <div data-testid="errorMessage">{genericErrorMessage}</div>
+          }
             <Grid container spacing={1}>
               <Grid xs={12} sm={6} item>
                 <TextField variant="outlined" 
