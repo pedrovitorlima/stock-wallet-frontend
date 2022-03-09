@@ -4,6 +4,7 @@ import { AppBar, Tab, Tabs } from '@material-ui/core';
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
 import ListWallet from './Wallet/ListWallet/ListWallet';
+import CreateWallet from './Wallet/CreateWallet/CreateWallet';
 
 const App = () => {
 
@@ -39,7 +40,10 @@ const App = () => {
       </AppBar>
       
       <Routes>
-        <Route path="/wallet" element={<ListWallet />} />
+        <Route path="/wallet">
+          <Route index element={<ListWallet />} />
+          <Route path="/wallet/create" element={<CreateWallet />} />
+        </Route>
       </Routes>
     </div>
   );

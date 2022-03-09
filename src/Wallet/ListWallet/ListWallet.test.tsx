@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import ListWallet from "./ListWallet";
 import { Wallet } from "../../domain/wallet";
@@ -14,7 +14,7 @@ describe('Given ListWallet component', () => {
 
   describe('When the component renders', () => {
 
-    test('Then it should render a loading message', () => {
+    it('should render a loading message', () => {
       mockedUseFetchAllWallets.mockImplementation(() => ({ isLoading: true }));
 
       renderComponent();
@@ -22,21 +22,27 @@ describe('Given ListWallet component', () => {
       screen.getByText('Loading wallets');
     });
     
-    test('Then it should show a header', () => {
+    it('should render a header', () => {
       renderComponent();
 
       screen.getByText("wallets/list");
     });
     
-    test('Then it should show a data grid', () => {
+    it('should render a data grid', () => {
       renderComponent();
 
       const dataGrid = screen.getByTestId("dataGrid");
       expect(dataGrid).toBeInTheDocument();
     });
 
+    it('should render a button to create new wallets', () => {
+      renderComponent();
+
+      const newWalletButton = screen.getByTestId("newWalletButton");
+      expect(newWalletButton).toBeInTheDocument();
+    });
     describe('And there are wallets created', () => {
-      test('Then it should render a list of wallets', async () => {
+      it('should render a list of wallets', async () => {
         const wallets: Wallet[] = [{id: 1, name: 'wallet 1'}, {id: 2, name: 'wallet 2'}]
 
         mockedUseFetchAllWallets.mockImplementation(() => (
@@ -51,7 +57,7 @@ describe('Given ListWallet component', () => {
         screen.getByText("wallet 1");
       }); 
 
-      test('Then the loading message should disapear after render', () => {
+      it('should hide the loading message after render', () => {
         mockedUseFetchAllWallets.mockImplementation(() => ({ isLoading: false, }));
         
         renderComponent();

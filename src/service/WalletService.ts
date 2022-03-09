@@ -27,6 +27,7 @@ const create = async ({ name }: Wallet) => {
 const list = async () => {
   const response = await apiClient.get<Wallet[]>("/wallet");
   return response.data;
+  // return [];
 }
 
 const WalletService = {

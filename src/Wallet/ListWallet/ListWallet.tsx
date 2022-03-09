@@ -6,7 +6,7 @@ import ReactLoading from "react-loading";
 import { useFetchAllWallets } from '../../hooks/useFetchAllWallets';
 
 const ListWallet: FC = () => {
-
+  
   const [apiError, setApiError] = useState<string | undefined>();
   const { data, error, isLoading, isError } = useFetchAllWallets();
 
@@ -32,6 +32,12 @@ const ListWallet: FC = () => {
         <CardHeader title="wallets/list"/>
         <CardContent>
           <Grid container spacing={1}>
+          <Button variant="contained" 
+                  color="secondary" 
+                  data-testid="newWalletButton"
+                  href="/wallet/create">
+                    new wallet
+          </Button>
           <Table aria-label="simple table" data-testid="dataGrid">
             <TableHead>
               <TableRow>
